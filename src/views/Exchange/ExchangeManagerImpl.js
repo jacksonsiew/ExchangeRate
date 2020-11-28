@@ -234,9 +234,6 @@ export default class ExchangeManagerImpl extends ExchangeModel {
     }
 
     handleExchangeTo(changeEvent) {
-        console.log(this.state.amount);
-        console.log(this.state.ratesList[changeEvent.target.value]);
-        console.log(this.state.amount * this.state.ratesList[changeEvent.target.value]);
         this.setState({
             currencyRate: changeEvent.target.value ? this.state.ratesList[changeEvent.target.value] : "-",
             receivedAmount: changeEvent.target.value
@@ -270,12 +267,12 @@ export default class ExchangeManagerImpl extends ExchangeModel {
         } else {
             const balance =
                 this.state.exchangeFrom === "AUD"
-                    ? this.state.AUD - this.state.amount
+                    ? parseFloat(this.state.AUD) - parseFloat(this.state.amount)
                     : this.state.exchangeFrom === "MYR"
-                    ? this.state.MYR - this.state.amount
+                    ? parseFloat(this.state.MYR) - parseFloat(this.state.amount)
                     : this.state.exchangeFrom === "SGD"
-                    ? this.state.SGD - this.state.amount
-                    : this.state.USD - this.state.amount;
+                    ? parseFloat(this.state.SGD) - parseFloat(this.state.amount)
+                    : parseFloat(this.state.USD) - parseFloat(this.state.amount);
             this.setState({ balance, exchangeTo: "", currencyRate: "-", receivedAmount: "-" });
         }
     }
