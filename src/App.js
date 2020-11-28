@@ -11,6 +11,11 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import "views/CustomFormat";
 
+const PRODUCTION_MODE = Boolean(true);
+if (PRODUCTION_MODE) {
+    console.log = console.warn = console.error = () => {};
+}
+
 const Login = lazy(() => import("./views/Login/Login.js"));
 const Admin = lazy(() => import("layouts/Admin.js"));
 const excludedPath = ["/", "/registerUser"];
