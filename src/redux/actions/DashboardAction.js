@@ -61,9 +61,9 @@ export const loadConstant = () => {
                     async (doc) => {
                         const payload = {
                             AUD: parseFloat(doc.data().AUD).toFixed(6),
-                            MYR: parseFloat(doc.data().MYR).toFixed(3),
-                            SGD: parseFloat(doc.data().SGD).toFixed(3),
-                            USD: parseFloat(doc.data().USD).toFixed(3)
+                            MYR: parseFloat(doc.data().MYR).toFixed(4),
+                            SGD: parseFloat(doc.data().SGD).toFixed(4),
+                            USD: parseFloat(doc.data().USD).toFixed(4)
                         };
                         loaded = true;
                         dispatch({
