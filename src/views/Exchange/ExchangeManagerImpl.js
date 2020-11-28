@@ -282,10 +282,10 @@ export default class ExchangeManagerImpl extends ExchangeModel {
 
     handleDropdownCondition(currency) {
         return (
-            (currency === "AUD" && this.state.AUD !== 0) ||
-            (currency === "MYR" && this.state.MYR !== 0) ||
-            (currency === "SGD" && this.state.SGD !== 0) ||
-            (currency === "USD" && this.state.USD !== 0)
+            (currency === "AUD" && parseInt(this.state.AUD) !== 0) ||
+            (currency === "MYR" && parseInt(this.state.MYR) !== 0) ||
+            (currency === "SGD" && parseInt(this.state.SGD) !== 0) ||
+            (currency === "USD" && parseInt(this.state.USD) !== 0)
         );
     }
 
@@ -386,8 +386,8 @@ export default class ExchangeManagerImpl extends ExchangeModel {
                                 .collection("users/")
                                 .doc(firebase.auth().currentUser.uid)
                                 .update({
-                                    [this.state.exchangeFrom]: totalAmount - parseFloat(this.state.amount),
-                                    [this.state.exchangeTo]: increasedAmount + parseFloat(this.state.receivedAmount)
+                                    [this.state.exchangeFrom]: parseFloat(totalAmount) - parseFloat(this.state.amount),
+                                    [this.state.exchangeTo]: parseFloat(increasedAmount) + parseFloat(this.state.receivedAmount)
                                 });
                         })
                         .then(() => {
