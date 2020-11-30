@@ -214,15 +214,24 @@ export default class ExchangeManagerImpl extends ExchangeModel {
             MYR: currencies.MYR,
             SGD: currencies.SGD,
             USD: currencies.USD,
-            exchangeToList: Object.keys(currenciesType),
+            exchangeToList: Object.keys(currenciesType).filter((e)=>{
+                return e !== "AUD" && e !== "SGD" && e !== "MYR";
+            }),
             loading: false
         });
     }
 
     handleExchangeFrom(changeEvent) {
-        const exchangeToList = Object.keys(currenciesType).filter((e) => {
-            return e !== changeEvent.target.value;
-        });
+        let exchangeToList;
+        if (changeEvent.target.value !== "USD") {
+            exchangeToList = Object.keys(currenciesType).filter((e) => {
+                return e !== "AUD" && e !== "SGD" && e !== "MYR";
+            });
+        } else {
+            exchangeToList = Object.keys(currenciesType).filter((e) => {
+                return e !== changeEvent.target.value;
+            });
+        }
         this.setState({
             exchangeToList,
             exchangeTo: this.state.exchangeTo !== changeEvent.target.value ? this.state.exchangeTo : "",
