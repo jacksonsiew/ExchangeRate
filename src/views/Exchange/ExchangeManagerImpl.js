@@ -4,7 +4,7 @@ import firebase from "../firebase";
 import swal from "@sweetalert/with-react";
 import i18n from "../../i18n";
 import { NUM_OF_RECORDS_PER_PAGE, FIRST_PAGE, currenciesType } from "../Properties";
-import currency from 'currency.js';
+import currency from "currency.js";
 
 export default class ExchangeManagerImpl extends ExchangeModel {
     constructor(props) {
@@ -234,11 +234,23 @@ export default class ExchangeManagerImpl extends ExchangeModel {
     }
 
     handleExchangeTo(changeEvent) {
+        let receivedAmount;
+        if (changeEvent.target.value) {
+            if (changeEvent.target.value === "USD") {
+                receivedAmount = currency(this.state.amount, { precision: 5 }).divide(
+                    this.state.ratesList[this.state.exchangeFrom]
+                );
+            } else {
+                receivedAmount = currency(this.state.amount, { precision: 5 }).multiply(
+                    this.state.ratesList[changeEvent.target.value]
+                );
+            }
+        } else {
+            receivedAmount = "-";
+        }
         this.setState({
             currencyRate: changeEvent.target.value ? this.state.ratesList[changeEvent.target.value] : "-",
-            receivedAmount: changeEvent.target.value
-                ? currency(this.state.amount, {precision: 5}).multiply(this.state.ratesList[changeEvent.target.value])
-                : "-",
+            receivedAmount,
             exchangeTo: changeEvent.target.value,
             exchangeToErrorMessage: null
         });
@@ -384,7 +396,8 @@ export default class ExchangeManagerImpl extends ExchangeModel {
                                 .doc(firebase.auth().currentUser.uid)
                                 .update({
                                     [this.state.exchangeFrom]: parseFloat(totalAmount) - parseFloat(this.state.amount),
-                                    [this.state.exchangeTo]: parseFloat(increasedAmount) + parseFloat(this.state.receivedAmount)
+                                    [this.state.exchangeTo]:
+                                        parseFloat(increasedAmount) + parseFloat(this.state.receivedAmount)
                                 });
                         })
                         .then(() => {
